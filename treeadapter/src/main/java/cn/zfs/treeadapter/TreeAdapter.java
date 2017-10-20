@@ -153,6 +153,9 @@ public abstract class TreeAdapter<T extends Node<T>> extends BaseAdapter {
                 T node = showNodes.get(holder.position);
                 if (node.hasChild()) {
                     node.isExpand = !node.isExpand;
+                    if (!node.isExpand) {
+                        fold(node.childNodes);
+                    }
                     showNodes.clear();
                     addedChildNodeIds.clear();
                     showNodes.addAll(firstLevelNodes);
@@ -164,4 +167,14 @@ public abstract class TreeAdapter<T extends Node<T>> extends BaseAdapter {
             }
         }
     };
+    
+    //递归收起节点及子节点
+    private void fold(List<T> list) {
+        for (T t : list) {
+            t.isExpand = false;
+            if (t.hasChild()) {
+                fold(t.childNodes);
+            }
+        }
+    }
 }
