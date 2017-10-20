@@ -176,23 +176,21 @@ public abstract class TreeAdapter<T extends Node<T>> extends BaseAdapter {
     private View.OnClickListener clickListener = new View.OnClickListener() {
         @Override
         public void onClick(View v) {
-            if (listener != null) {
-                Holder<T> holder = (Holder<T>) v.getTag();
-                T node = showNodes.get(holder.position);
-                if (node.hasChild()) {
-                    node.isExpand = !node.isExpand;
-                    if (!node.isExpand) {
-                        fold(node.childNodes);
-                    }
-                    showNodes.clear();
-                    addedChildNodeIds.clear();
-                    showNodes.addAll(firstLevelNodes);
-                    filterShowAndSortNodes();
-                    TreeAdapter.super.notifyDataSetChanged();
-                } else {
-                    listener.onClick(node);
+            Holder<T> holder = (Holder<T>) v.getTag();
+            T node = showNodes.get(holder.position);
+            if (node.hasChild()) {
+                node.isExpand = !node.isExpand;
+                if (!node.isExpand) {
+                    fold(node.childNodes);
                 }
-            }
+                showNodes.clear();
+                addedChildNodeIds.clear();
+                showNodes.addAll(firstLevelNodes);
+                filterShowAndSortNodes();
+                TreeAdapter.super.notifyDataSetChanged();
+            } else if (listener != null) {
+                listener.onClick(node);
+            }                
         }
     };
     
