@@ -45,7 +45,7 @@ public abstract class TreeAdapter<T extends Node<T>> extends BaseAdapter {
     }
     
     public void setNodes(List<T> nodes) {
-        if (nodes != null && !nodes.isEmpty()) {
+        if (nodes != null) {
             totalNodes = nodes;
             //过滤出显示的节点
             init();
