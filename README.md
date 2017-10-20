@@ -1,6 +1,7 @@
 效果图：
 
 ![image](https://github.com/fszeng2011/treeadapter/raw/master/device-2017-10-20-123847.png)
+![image](https://github.com/fszeng2011/treeadapter/raw/master/device-2017-10-20-152325.png)
 
 支持多层级，条目内容自定义。
 
@@ -79,6 +80,12 @@
         @Override
         public void onClick(Item node) {
             Toast.makeText(MainActivity.this, "click: " + node.name, Toast.LENGTH_SHORT).show();
+        }
+    });
+    adapter.setOnInnerItemLongClickListener(new TreeAdapter.OnInnerItemLongClickListener<Item>() {
+        @Override
+        public void onLongClick(Item node) {
+            Toast.makeText(MainActivity.this, "long click: " + node.name, Toast.LENGTH_SHORT).show();
         }
     });
     lv.setAdapter(adapter);
