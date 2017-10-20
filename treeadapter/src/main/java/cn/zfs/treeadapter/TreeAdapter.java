@@ -68,6 +68,7 @@ public abstract class TreeAdapter<T extends Node<T>> extends BaseAdapter {
     }
 
     private void initNodes() {
+        firstLevelNodes.clear();
         //先循环一次，获取最小的level
         Integer level = null;
         for (T node : totalNodes) {
@@ -79,6 +80,10 @@ public abstract class TreeAdapter<T extends Node<T>> extends BaseAdapter {
             //过滤出最外层
             if (node.level == level) {
                 firstLevelNodes.add(node);
+            }
+            //清空之间添加的
+            if (node.hasChild()) {
+                node.childNodes.clear();
             }
             //给节点添加子节点并排序
             for (T t : totalNodes) {

@@ -1,6 +1,7 @@
 package cn.zfs.treeadapterdemo;
 
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.view.ViewGroup;
@@ -23,17 +24,17 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         ListView lv = new ListView(this);
         setContentView(lv, new ViewGroup.LayoutParams(-1, -1));
-        List<Item> list = new ArrayList<>();
-        list.add(new Item(0, 0, 0, true, "Android"));
+        final List<Item> list = new ArrayList<>();
+        list.add(new Item(0, 0, 0, false, "Android"));
         list.add(new Item(1, 0, 1, false, "Service"));
         list.add(new Item(2, 0, 1, false, "Activity"));
         list.add(new Item(3, 0, 1, false, "Receiver"));
-        list.add(new Item(4, 0, 0, false, "Java Web"));
+        list.add(new Item(4, 0, 0, true, "Java Web"));
         list.add(new Item(5, 4, 1, false, "CSS"));
         list.add(new Item(6, 4, 1, false, "Jsp"));
-        list.add(new Item(7, 4, 1, false, "Html"));
+        list.add(new Item(7, 4, 1, true, "Html"));
         list.add(new Item(8, 7, 2, false, "p"));
-        MyAdapter adapter = new MyAdapter(list);
+        final MyAdapter adapter = new MyAdapter(list);
         adapter.setOnInnerItemClickListener(new TreeAdapter.OnInnerItemClickListener<Item>() {
             @Override
             public void onClick(Item node) {
@@ -47,6 +48,13 @@ public class MainActivity extends AppCompatActivity {
             }
         });
         lv.setAdapter(adapter);
+        new Handler().postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                list.add(new Item(9, 7, 2, false, "a"));
+                adapter.notifyDataSetChanged();
+            }
+        }, 2000);
     }
 
     private class MyAdapter extends TreeAdapter<Item> {

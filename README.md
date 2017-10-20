@@ -89,3 +89,10 @@
         }
     });
     lv.setAdapter(adapter);
+    new Handler().postDelayed(new Runnable() {
+        @Override
+        public void run() {
+            list.add(new Item(9, 7, 2, false, "a"));
+            adapter.notifyDataSetChanged();
+        }
+    }, 2000);
