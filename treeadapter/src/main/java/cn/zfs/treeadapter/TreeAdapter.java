@@ -48,15 +48,25 @@ public abstract class TreeAdapter<T extends Node<T>> extends BaseAdapter {
         if (nodes != null && !nodes.isEmpty()) {
             totalNodes = nodes;
             //过滤出显示的节点
-            showNodes.clear();
-            initNodes();
-            addedChildNodeIds.clear();
-            showNodes.addAll(firstLevelNodes);
-            filterShowAndSortNodes();
-            notifyDataSetChanged();
+            init();
+            super.notifyDataSetChanged();
         }
     }
     
+    private void init() {
+        showNodes.clear();
+        initNodes();
+        addedChildNodeIds.clear();
+        showNodes.addAll(firstLevelNodes);
+        filterShowAndSortNodes();
+    }
+
+    @Override
+    public void notifyDataSetChanged() {
+        init();
+        super.notifyDataSetChanged();
+    }
+
     private void initNodes() {
         //先循环一次，获取最小的level
         Integer level = null;
@@ -173,7 +183,7 @@ public abstract class TreeAdapter<T extends Node<T>> extends BaseAdapter {
                     addedChildNodeIds.clear();
                     showNodes.addAll(firstLevelNodes);
                     filterShowAndSortNodes();
-                    notifyDataSetChanged();
+                    TreeAdapter.super.notifyDataSetChanged();
                 } else {
                     listener.onClick(node);
                 }
