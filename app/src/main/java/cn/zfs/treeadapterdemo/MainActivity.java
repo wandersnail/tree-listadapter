@@ -40,6 +40,12 @@ public class MainActivity extends AppCompatActivity {
                 Toast.makeText(MainActivity.this, "click: " + node.name, Toast.LENGTH_SHORT).show();
             }
         });
+        adapter.setOnInnerItemLongClickListener(new TreeAdapter.OnInnerItemLongClickListener<Item>() {
+            @Override
+            public void onLongClick(Item node) {
+                Toast.makeText(MainActivity.this, "long click: " + node.name, Toast.LENGTH_SHORT).show();
+            }
+        });
         lv.setAdapter(adapter);
     }
 

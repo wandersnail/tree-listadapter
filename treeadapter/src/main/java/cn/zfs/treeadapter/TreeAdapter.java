@@ -22,9 +22,14 @@ public abstract class TreeAdapter<T extends Node<T>> extends BaseAdapter {
     private List<T> firstLevelNodes = new ArrayList<>();
     private SparseIntArray addedChildNodeIds = new SparseIntArray();
     private OnInnerItemClickListener<T> listener;
+    private OnInnerItemLongClickListener<T> longListener;
 
     public interface OnInnerItemClickListener<T> {
         void onClick(T node);
+    }
+    
+    public interface OnInnerItemLongClickListener<T> {
+        void onLongClick(T node);
     }
     
     public TreeAdapter(List<T> nodes) {
@@ -33,6 +38,10 @@ public abstract class TreeAdapter<T extends Node<T>> extends BaseAdapter {
     
     public void setOnInnerItemClickListener(OnInnerItemClickListener<T> listener) {
         this.listener = listener;
+    }
+    
+    public void setOnInnerItemLongClickListener(OnInnerItemLongClickListener<T> listener) {
+        longListener = listener;
     }
     
     public void setNodes(List<T> nodes) {
@@ -112,10 +121,14 @@ public abstract class TreeAdapter<T extends Node<T>> extends BaseAdapter {
         } else {
             holder = (Holder<T>) convertView.getTag();
         }
-        holder.setData(showNodes.get(position));
+        T node = showNodes.get(position);
+        holder.setData(node);
         holder.position = position;
         View view = holder.getConvertView();
         view.setOnClickListener(clickListener);
+        if (!node.hasChild()) {
+            view.setOnLongClickListener(longClickListener);
+        }
         return view;
     }
     
@@ -165,6 +178,17 @@ public abstract class TreeAdapter<T extends Node<T>> extends BaseAdapter {
                     listener.onClick(node);
                 }
             }
+        }
+    };
+    
+    private View.OnLongClickListener longClickListener = new View.OnLongClickListener() {
+        @Override
+        public boolean onLongClick(View v) {
+            if (longListener != null) {
+                Holder<T> holder = (Holder<T>) v.getTag();
+                longListener.onLongClick(showNodes.get(holder.position));
+            }
+            return true;
         }
     };
     
