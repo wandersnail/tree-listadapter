@@ -87,6 +87,9 @@ public abstract class TreeAdapter<T extends Node<T>> extends BaseAdapter {
             }
             //给节点添加子节点并排序
             for (T t : totalNodes) {
+                if (node.id == t.id && node.level != t.level) {
+                    throw new IllegalArgumentException("id cannot be duplicated");
+                }
                 if (node.id == t.pId && node.level != t.level) {
                     node.addChild(t);
                 }
@@ -132,7 +135,7 @@ public abstract class TreeAdapter<T extends Node<T>> extends BaseAdapter {
     public View getView(int position, View convertView, ViewGroup parent) {
         Holder<T> holder;
         if (convertView == null) {
-            holder = getHolder();
+            holder = getHolder(position);
         } else {
             holder = (Holder<T>) convertView.getTag();
         }
@@ -171,7 +174,7 @@ public abstract class TreeAdapter<T extends Node<T>> extends BaseAdapter {
         protected abstract View createConvertView();
     }
 
-    protected abstract Holder<T> getHolder();
+    protected abstract Holder<T> getHolder(int position);
     
     private View.OnClickListener clickListener = new View.OnClickListener() {
         @Override

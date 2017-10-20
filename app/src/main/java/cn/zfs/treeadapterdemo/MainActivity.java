@@ -63,42 +63,67 @@ public class MainActivity extends AppCompatActivity {
         }
 
         @Override
-        protected Holder<Item> getHolder() {
-            return new Holder<Item>() {
-                private ImageView iv;
-                private TextView tv;
-                private View rootView;
+        public int getViewTypeCount() {
+            return super.getViewTypeCount() + 1;
+        }
 
-                @Override
-                protected void setData(Item node) {
-                    iv.setVisibility(node.hasChild() ? View.VISIBLE : View.INVISIBLE);
-                    iv.setBackgroundResource(node.isExpand ? R.mipmap.expand : R.mipmap.fold);
-                    RelativeLayout.LayoutParams params = (RelativeLayout.LayoutParams) iv.getLayoutParams();
-                    params.leftMargin = (node.level + 1) * dip2px(20);
-                    iv.setLayoutParams(params);
-                    tv.setText(node.name);
-                    if (node.hasChild()) {
-                        switch(node.level) {
-                            case 0:
-                                rootView.setBackgroundColor(0xff30C251);
-                                break;
-                            case 1:
-                                rootView.setBackgroundColor(0xff446F91);
-                                break;
+        /**
+         * 获取当前位置的条目类型
+         */
+        @Override
+        public int getItemViewType(int position) {
+            if (getItem(position).hasChild()) {
+                return 1;
+            }
+            return 0;
+        }
+        
+        @Override
+        protected Holder<Item> getHolder(int position) {
+            switch(getItemViewType(position)) {
+                case 1:
+                    return new Holder<Item>() {
+                        private ImageView iv;
+                        private TextView tv;
+
+                        @Override
+                        protected void setData(Item node) {
+                            iv.setVisibility(node.hasChild() ? View.VISIBLE : View.INVISIBLE);
+                            iv.setBackgroundResource(node.isExpand ? R.mipmap.expand : R.mipmap.fold);
+                            RelativeLayout.LayoutParams params = (RelativeLayout.LayoutParams) iv.getLayoutParams();
+                            params.leftMargin = (node.level + 1) * dip2px(20);
+                            iv.setLayoutParams(params);
+                            tv.setText(node.name);
                         }
-                    } else {
-                        rootView.setBackgroundColor(0xffE36209);
-                    }                 
-                }
 
-                @Override
-                protected View createConvertView() {
-                    rootView = View.inflate(MainActivity.this, R.layout.item_tree_list, null);
-                    iv = (ImageView) rootView.findViewById(R.id.ivIcon);
-                    tv = (TextView) rootView.findViewById(R.id.tvName);
-                    return rootView;
-                }
-            };
+                        @Override
+                        protected View createConvertView() {
+                            View view = View.inflate(MainActivity.this, R.layout.item_tree_list_has_child, null);
+                            iv = (ImageView) view.findViewById(R.id.ivIcon);
+                            tv = (TextView) view.findViewById(R.id.tvName);
+                            return view;
+                        }
+                    };
+                default:
+                    return new Holder<Item>() {
+                        private TextView tv;
+                        
+                        @Override
+                        protected void setData(Item node) {
+                            tv.setText(node.name);
+                            RelativeLayout.LayoutParams params = (RelativeLayout.LayoutParams) tv.getLayoutParams();
+                            params.leftMargin = (node.level + 3) * dip2px(20);
+                            tv.setLayoutParams(params);
+                        }
+
+                        @Override
+                        protected View createConvertView() {
+                            View view = View.inflate(MainActivity.this, R.layout.item_tree_list_no_child, null);
+                            tv = (TextView) view.findViewById(R.id.tvName);
+                            return view;
+                        }
+                    };
+            }
         }
     }
 
