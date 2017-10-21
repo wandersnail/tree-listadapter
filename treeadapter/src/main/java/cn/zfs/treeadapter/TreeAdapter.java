@@ -87,7 +87,7 @@ public abstract class TreeAdapter<T extends Node<T>> extends BaseAdapter {
             }
             //给节点添加子节点并排序
             for (T t : totalNodes) {
-                if (node.id == t.id && node.level != t.level) {
+                if (node.id == t.id && node != t) {
                     throw new IllegalArgumentException("id cannot be duplicated");
                 }
                 if (node.id == t.pId && node.level != t.level) {
