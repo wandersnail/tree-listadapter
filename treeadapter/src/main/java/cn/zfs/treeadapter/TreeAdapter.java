@@ -81,7 +81,7 @@ public abstract class TreeAdapter<T extends Node<T>> extends BaseAdapter {
             if (node.level == level) {
                 firstLevelNodes.add(node);
             }
-            //清空之间添加的
+            //清空之前添加的
             if (node.hasChild()) {
                 node.childNodes.clear();
             }
