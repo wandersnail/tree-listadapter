@@ -27,11 +27,11 @@ public abstract class TreeAdapter<T extends Node<T>> extends BaseAdapter impleme
     private OnInnerItemLongClickListener<T> longListener;
 
     public interface OnInnerItemClickListener<T> {
-        void onClick(T node);
+        void onClick(T node, AdapterView<?> parent, View view, int position);
     }
     
     public interface OnInnerItemLongClickListener<T> {
-        void onLongClick(T node);
+        void onLongClick(T node, AdapterView<?> parent, View view, int position);
     }
     
     public TreeAdapter(ListView lv, List<T> nodes) {
@@ -189,7 +189,7 @@ public abstract class TreeAdapter<T extends Node<T>> extends BaseAdapter impleme
             filterShowAndSortNodes();
             TreeAdapter.super.notifyDataSetChanged();
         } else if (listener != null) {
-            listener.onClick(node);
+            listener.onClick(node, parent, view, position);
         }
     }
 
@@ -198,7 +198,7 @@ public abstract class TreeAdapter<T extends Node<T>> extends BaseAdapter impleme
         if (longListener != null) {
             T node = getItem(position);
             if (!node.hasChild()) {
-                longListener.onLongClick(node);
+                longListener.onLongClick(node, parent, view, position);
             }
         }
         return true;
