@@ -34,7 +34,7 @@ public class MainActivity extends AppCompatActivity {
         list.add(new Item(6, 4, 1, false, "Jsp"));
         list.add(new Item(7, 4, 1, true, "Html"));
         list.add(new Item(8, 7, 2, false, "p"));
-        final MyAdapter adapter = new MyAdapter(list);
+        final MyAdapter adapter = new MyAdapter(lv, list);
         adapter.setOnInnerItemClickListener(new TreeAdapter.OnInnerItemClickListener<Item>() {
             @Override
             public void onClick(Item node) {
@@ -58,8 +58,8 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private class MyAdapter extends TreeAdapter<Item> {
-        MyAdapter(List<Item> nodes) {
-            super(nodes);
+        MyAdapter(ListView lv, List<Item> nodes) {
+            super(lv, nodes);
         }
 
         @Override

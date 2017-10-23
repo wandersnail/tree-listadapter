@@ -3,7 +3,9 @@ package cn.zfs.treeadapter;
 import android.util.SparseIntArray;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.BaseAdapter;
+import android.widget.ListView;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -16,7 +18,7 @@ import java.util.List;
  * 功能: 树结构ListView适配器。
  */
 
-public abstract class TreeAdapter<T extends Node<T>> extends BaseAdapter {
+public abstract class TreeAdapter<T extends Node<T>> extends BaseAdapter implements AdapterView.OnItemClickListener, AdapterView.OnItemLongClickListener {
     private List<T> totalNodes = new ArrayList<>();
     private List<T> showNodes = new ArrayList<>();
     private List<T> firstLevelNodes = new ArrayList<>();
@@ -32,8 +34,10 @@ public abstract class TreeAdapter<T extends Node<T>> extends BaseAdapter {
         void onLongClick(T node);
     }
     
-    public TreeAdapter(List<T> nodes) {
-        setNodes(nodes);        
+    public TreeAdapter(ListView lv, List<T> nodes) {
+        setNodes(nodes);  
+        lv.setOnItemClickListener(this);
+        lv.setOnItemLongClickListener(this);
     }
     
     public void setOnInnerItemClickListener(OnInnerItemClickListener<T> listener) {
@@ -142,12 +146,7 @@ public abstract class TreeAdapter<T extends Node<T>> extends BaseAdapter {
         T node = showNodes.get(position);
         holder.setData(node);
         holder.position = position;
-        View view = holder.getConvertView();
-        view.setOnClickListener(clickListener);
-        if (!node.hasChild()) {
-            view.setOnLongClickListener(longClickListener);
-        }
-        return view;
+        return holder.convertView;
     }
     
     public abstract static class Holder<T> {
@@ -175,38 +174,35 @@ public abstract class TreeAdapter<T extends Node<T>> extends BaseAdapter {
     }
 
     protected abstract Holder<T> getHolder(int position);
-    
-    private View.OnClickListener clickListener = new View.OnClickListener() {
-        @Override
-        public void onClick(View v) {
-            Holder<T> holder = (Holder<T>) v.getTag();
-            T node = showNodes.get(holder.position);
-            if (node.hasChild()) {
-                node.isExpand = !node.isExpand;
-                if (!node.isExpand) {
-                    fold(node.childNodes);
-                }
-                showNodes.clear();
-                addedChildNodeIds.clear();
-                showNodes.addAll(firstLevelNodes);
-                filterShowAndSortNodes();
-                TreeAdapter.super.notifyDataSetChanged();
-            } else if (listener != null) {
-                listener.onClick(node);
-            }                
-        }
-    };
-    
-    private View.OnLongClickListener longClickListener = new View.OnLongClickListener() {
-        @Override
-        public boolean onLongClick(View v) {
-            if (longListener != null) {
-                Holder<T> holder = (Holder<T>) v.getTag();
-                longListener.onLongClick(showNodes.get(holder.position));
+
+    @Override
+    public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+        T node = getItem(position);
+        if (node.hasChild()) {
+            node.isExpand = !node.isExpand;
+            if (!node.isExpand) {
+                fold(node.childNodes);
             }
-            return true;
+            showNodes.clear();
+            addedChildNodeIds.clear();
+            showNodes.addAll(firstLevelNodes);
+            filterShowAndSortNodes();
+            TreeAdapter.super.notifyDataSetChanged();
+        } else if (listener != null) {
+            listener.onClick(node);
         }
-    };
+    }
+
+    @Override
+    public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
+        if (longListener != null) {
+            T node = getItem(position);
+            if (!node.hasChild()) {
+                longListener.onLongClick(node);
+            }
+        }
+        return true;
+    }
     
     //递归收起节点及子节点
     private void fold(List<T> list) {
