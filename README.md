@@ -19,8 +19,8 @@
 2.继承TreeAdapter自己实现条目内容
 
     private class MyAdapter extends TreeAdapter<Item> {
-        MyAdapter(List<Item> nodes) {
-            super(nodes);
+        MyAdapter(ListView lv, List<Item> nodes) {
+            super(lv, nodes);
         }
 
         @Override
@@ -100,7 +100,7 @@
     list.add(new Item(6, 4, 1, false, "Jsp"));
     list.add(new Item(7, 4, 1, false, "Html"));
     list.add(new Item(8, 7, 2, false, "p"));
-    MyAdapter adapter = new MyAdapter(list);
+    MyAdapter adapter = new MyAdapter(lv, list);
     adapter.setOnInnerItemClickListener(new TreeAdapter.OnInnerItemClickListener<Item>() {
         @Override
         public void onClick(Item node) {
