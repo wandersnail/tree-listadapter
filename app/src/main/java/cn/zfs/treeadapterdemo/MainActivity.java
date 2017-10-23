@@ -5,6 +5,7 @@ import android.os.Handler;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.RelativeLayout;
@@ -37,13 +38,13 @@ public class MainActivity extends AppCompatActivity {
         final MyAdapter adapter = new MyAdapter(lv, list);
         adapter.setOnInnerItemClickListener(new TreeAdapter.OnInnerItemClickListener<Item>() {
             @Override
-            public void onClick(Item node) {
+            public void onClick(Item node, AdapterView<?> parent, View view, int position) {
                 Toast.makeText(MainActivity.this, "click: " + node.name, Toast.LENGTH_SHORT).show();
             }
         });
         adapter.setOnInnerItemLongClickListener(new TreeAdapter.OnInnerItemLongClickListener<Item>() {
             @Override
-            public void onLongClick(Item node) {
+            public void onLongClick(Item node, AdapterView<?> parent, View view, int position) {
                 Toast.makeText(MainActivity.this, "long click: " + node.name, Toast.LENGTH_SHORT).show();
             }
         });
