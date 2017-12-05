@@ -16,6 +16,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 import cn.zfs.treeadapter.Node;
+import cn.zfs.treeadapter.OnInnerItemClickListener;
+import cn.zfs.treeadapter.OnInnerItemLongClickListener;
 import cn.zfs.treeadapter.TreeAdapter;
 
 public class MainActivity extends AppCompatActivity {
@@ -36,13 +38,13 @@ public class MainActivity extends AppCompatActivity {
         list.add(new Item(7, 4, 1, true, "Html"));
         list.add(new Item(8, 7, 2, false, "p"));
         final MyAdapter adapter = new MyAdapter(lv, list);
-        adapter.setOnInnerItemClickListener(new TreeAdapter.OnInnerItemClickListener<Item>() {
+        adapter.setOnInnerItemClickListener(new OnInnerItemClickListener<Item>() {
             @Override
             public void onClick(Item node, AdapterView<?> parent, View view, int position) {
                 Toast.makeText(MainActivity.this, "click: " + node.name, Toast.LENGTH_SHORT).show();
             }
         });
-        adapter.setOnInnerItemLongClickListener(new TreeAdapter.OnInnerItemLongClickListener<Item>() {
+        adapter.setOnInnerItemLongClickListener(new OnInnerItemLongClickListener<Item>() {
             @Override
             public void onLongClick(Item node, AdapterView<?> parent, View view, int position) {
                 Toast.makeText(MainActivity.this, "long click: " + node.name, Toast.LENGTH_SHORT).show();

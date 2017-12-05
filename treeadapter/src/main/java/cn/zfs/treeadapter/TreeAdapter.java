@@ -25,15 +25,9 @@ public abstract class TreeAdapter<T extends Node<T>> extends BaseAdapter impleme
     private SparseIntArray addedChildNodeIds = new SparseIntArray();
     private OnInnerItemClickListener<T> listener;
     private OnInnerItemLongClickListener<T> longListener;
-
-    public interface OnInnerItemClickListener<T> {
-        void onClick(T node, AdapterView<?> parent, View view, int position);
-    }
-    
-    public interface OnInnerItemLongClickListener<T> {
-        void onLongClick(T node, AdapterView<?> parent, View view, int position);
-    }
-    
+    private OnExpandableItemClickListerner<T> expandableListener;
+    private OnExpandableItemLongClickListener<T> expandableLongClickListener;
+        
     public TreeAdapter(ListView lv, List<T> nodes) {
         setNodes(nodes);  
         lv.setOnItemClickListener(this);
@@ -46,6 +40,14 @@ public abstract class TreeAdapter<T extends Node<T>> extends BaseAdapter impleme
     
     public void setOnInnerItemLongClickListener(OnInnerItemLongClickListener<T> listener) {
         longListener = listener;
+    }
+    
+    public void setOnExpandableItemClickListerner(OnExpandableItemClickListerner<T> listerner) {
+        expandableListener = listerner;
+    }
+
+    public void setOnExpandableItemLongClickListener(OnExpandableItemLongClickListener<T> listerner) {
+        expandableLongClickListener = listerner;
     }
     
     public void setNodes(List<T> nodes) {
@@ -153,7 +155,7 @@ public abstract class TreeAdapter<T extends Node<T>> extends BaseAdapter impleme
         private View convertView;
         int position;
 
-        public Holder() {
+        protected Holder() {
             convertView = createConvertView();
             convertView.setTag(this);
         }
@@ -188,6 +190,9 @@ public abstract class TreeAdapter<T extends Node<T>> extends BaseAdapter impleme
             showNodes.addAll(firstLevelNodes);
             filterShowAndSortNodes();
             TreeAdapter.super.notifyDataSetChanged();
+            if (expandableListener != null) {
+                expandableListener.onExpandableItemClick(node, parent, view, position);
+            }
         } else if (listener != null) {
             listener.onClick(node, parent, view, position);
         }
@@ -195,12 +200,14 @@ public abstract class TreeAdapter<T extends Node<T>> extends BaseAdapter impleme
 
     @Override
     public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
-        if (longListener != null) {
-            T node = getItem(position);
-            if (!node.hasChild()) {
-                longListener.onLongClick(node, parent, view, position);
+        T node = getItem(position);
+        if (node.hasChild()) {
+            if (expandableLongClickListener != null) {
+                expandableLongClickListener.onExpandableItemLongClick(node, parent, view, position);
             }
-        }
+        } else if (longListener != null) {
+            longListener.onLongClick(node, parent, view, position);
+        }        
         return true;
     }
     
