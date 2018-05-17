@@ -146,14 +146,12 @@ public abstract class TreeAdapter<T extends Node<T>> extends BaseAdapter impleme
             holder = (Holder<T>) convertView.getTag();
         }
         T node = showNodes.get(position);
-        holder.setData(node);
-        holder.position = position;
+        holder.setData(node, position);
         return holder.convertView;
     }
     
     public abstract static class Holder<T> {
         private View convertView;
-        int position;
 
         protected Holder() {
             convertView = createConvertView();
@@ -167,7 +165,7 @@ public abstract class TreeAdapter<T extends Node<T>> extends BaseAdapter impleme
         /**
          * 设置数据
          */
-        protected abstract void setData(T node);
+        protected abstract void setData(T node, int position);
 
         /**
          * 创建界面
