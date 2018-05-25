@@ -161,14 +161,17 @@ public abstract class TreeAdapter<T extends Node<T>> extends BaseAdapter impleme
         public View getConvertView() {
             return convertView;
         }
-        
+
         /**
          * 设置数据
+         * @param node 节点数据
+         * @param position 条目位置
          */
         protected abstract void setData(T node, int position);
 
         /**
          * 创建界面
+         * @return 返回布局
          */
         protected abstract View createConvertView();
     }

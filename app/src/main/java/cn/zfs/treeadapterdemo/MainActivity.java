@@ -90,7 +90,7 @@ public class MainActivity extends AppCompatActivity {
                         private TextView tv;
 
                         @Override
-                        protected void setData(Item node) {
+                        protected void setData(Item node, int position) {
                             iv.setVisibility(node.hasChild() ? View.VISIBLE : View.INVISIBLE);
                             iv.setBackgroundResource(node.isExpand ? R.mipmap.expand : R.mipmap.fold);
                             RelativeLayout.LayoutParams params = (RelativeLayout.LayoutParams) iv.getLayoutParams();
@@ -102,8 +102,8 @@ public class MainActivity extends AppCompatActivity {
                         @Override
                         protected View createConvertView() {
                             View view = View.inflate(MainActivity.this, R.layout.item_tree_list_has_child, null);
-                            iv = (ImageView) view.findViewById(R.id.ivIcon);
-                            tv = (TextView) view.findViewById(R.id.tvName);
+                            iv = view.findViewById(R.id.ivIcon);
+                            tv = view.findViewById(R.id.tvName);
                             return view;
                         }
                     };
@@ -112,7 +112,7 @@ public class MainActivity extends AppCompatActivity {
                         private TextView tv;
                         
                         @Override
-                        protected void setData(Item node) {
+                        protected void setData(Item node, int position) {
                             tv.setText(node.name);
                             RelativeLayout.LayoutParams params = (RelativeLayout.LayoutParams) tv.getLayoutParams();
                             params.leftMargin = (node.level + 3) * dip2px(20);
@@ -122,7 +122,7 @@ public class MainActivity extends AppCompatActivity {
                         @Override
                         protected View createConvertView() {
                             View view = View.inflate(MainActivity.this, R.layout.item_tree_list_no_child, null);
-                            tv = (TextView) view.findViewById(R.id.tvName);
+                            tv = view.findViewById(R.id.tvName);
                             return view;
                         }
                     };
