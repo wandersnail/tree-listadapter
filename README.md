@@ -1,20 +1,15 @@
-在根目录的build.gradle添加：
-
-    allprojects {
-		repositories {
-			...
-			maven { url 'https://jitpack.io' }
-		}
-	}
-
 在module的build.gradle添加依赖：
 
 	dependencies {
-		compile 'com.github.fszeng2011:treeadapter:2.1'
+		compile 'com.github.fszeng2011:treeadapter:2.0.0'
 	}
 
+## 代码托管
+[![JitPack](https://img.shields.io/badge/JitPack-treeadapter-green.svg?style=flat)](https://jitpack.io/#fszeng2011/fileselector)
+[![Download](https://api.bintray.com/packages/fszeng2017/maven/treeadapter/images/download.svg) ](https://bintray.com/fszeng2017/maven/treeadapter/_latestVersion)
+[![JCenter](https://img.shields.io/badge/JCenter-2.0.0-green.svg?style=flat)](http://jcenter.bintray.com/com/github/fszeng2011/treeadapter/2.0.0/)
 
-效果图：
+## 效果图
 
 ![image](https://github.com/fszeng2011/treeadapter/raw/master/device-2017-10-20-152326.png)
 ![image](https://github.com/fszeng2011/treeadapter/raw/master/device-2017-10-20-152327.png)
