@@ -1,13 +1,13 @@
 在module的build.gradle添加依赖：
 
 	dependencies {
-		compile 'com.github.fszeng2011:treeadapter:2.0.0'
+		implementation 'com.github.fszeng2011:treeadapter:2.0.0'
 	}
 
 ## 代码托管
 [![JitPack](https://img.shields.io/badge/JitPack-treeadapter-green.svg?style=flat)](https://jitpack.io/#fszeng2011/fileselector)
 [![Download](https://api.bintray.com/packages/fszeng2017/maven/treeadapter/images/download.svg) ](https://bintray.com/fszeng2017/maven/treeadapter/_latestVersion)
-[![JCenter](https://img.shields.io/badge/JCenter-2.0.0-green.svg?style=flat)](http://jcenter.bintray.com/com/github/fszeng2011/treeadapter/2.0.0/)
+[![JCenter](https://img.shields.io/badge/JCenter-2.2.1-green.svg?style=flat)](http://jcenter.bintray.com/com/github/fszeng2011/treeadapter/2.2.1/)
 
 ## 效果图
 
