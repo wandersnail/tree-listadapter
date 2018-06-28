@@ -5,7 +5,7 @@
 	}
 
 ## 代码托管
-[![JitPack](https://img.shields.io/badge/JitPack-treeadapter-green.svg?style=flat)](https://jitpack.io/#fszeng2011/fileselector)
+[![](https://jitpack.io/v/fszeng2011/treeadapter.svg)](https://jitpack.io/#fszeng2011/treeadapter)
 [![Download](https://api.bintray.com/packages/fszeng2017/maven/treeadapter/images/download.svg) ](https://bintray.com/fszeng2017/maven/treeadapter/_latestVersion)
 [![JCenter](https://img.shields.io/badge/JCenter-2.2.1-green.svg?style=flat)](http://jcenter.bintray.com/com/github/fszeng2011/treeadapter/2.2.1/)
 
