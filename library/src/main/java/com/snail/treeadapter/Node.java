@@ -1,4 +1,4 @@
-package cn.zfs.treeadapter;
+package com.snail.treeadapter;
 
 import android.support.annotation.NonNull;
 

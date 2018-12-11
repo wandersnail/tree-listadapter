@@ -1,1 +1,1 @@
-include ':app', ':treeadapter'
+include ':app', ':library'

@@ -1,17 +1,15 @@
 apply plugin: 'com.android.library'
 apply plugin: 'com.novoda.bintray-release'
-apply plugin: 'com.github.dcendents.android-maven'
 
 android {
-    compileSdkVersion 27
-
+    compileSdkVersion rootProject.ext.compileSdkVersion
     defaultConfig {
-        minSdkVersion 17
-        targetSdkVersion 27
-        versionCode 15
-        versionName "2.2.1"
-
+        minSdkVersion rootProject.ext.minSdkVersion
+        targetSdkVersion rootProject.ext.targetSdkVersion
+        versionCode 1
+        versionName "$lib_version"
     }
+
     buildTypes {
         release {
             minifyEnabled false
@@ -24,8 +22,8 @@ android {
 }
 
 dependencies {
-    implementation fileTree(dir: 'libs', include: ['*.jar'])
-    implementation 'com.android.support:support-annotations:27.1.1' 
+    implementation fileTree(include: ['*.jar'], dir: 'libs')
+    compileOnly "com.android.support:appcompat-v7:$support_lib_version"
 }
 
 // 打包源码
@@ -39,10 +37,11 @@ artifacts {
 }
 
 publish {
-    userOrg = 'fszeng2017' //bintray.com用户名  
-    groupId = 'com.github.fszeng2011' //jcenter上的路径  
+    repoName="android"//仓库名
+    userOrg = 'wandersnail' //bintray.com用户名  
+    groupId = 'com.github.wandersnail' //jcenter上的路径
     artifactId = 'treeadapter' //项目名称  
-    publishVersion = '2.2.1' //版本号  
+    publishVersion = "$lib_version" //版本号 
     desc = '一个树形结构ListView的适配器'
-    website = 'https://github.com/fszeng2011'
+    website = 'https://github.com/wandersnail'
 }

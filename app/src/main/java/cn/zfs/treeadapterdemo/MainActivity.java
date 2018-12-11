@@ -12,13 +12,13 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.snail.treeadapter.Node;
+import com.snail.treeadapter.OnInnerItemClickListener;
+import com.snail.treeadapter.OnInnerItemLongClickListener;
+import com.snail.treeadapter.TreeAdapter;
+
 import java.util.ArrayList;
 import java.util.List;
-
-import cn.zfs.treeadapter.Node;
-import cn.zfs.treeadapter.OnInnerItemClickListener;
-import cn.zfs.treeadapter.OnInnerItemLongClickListener;
-import cn.zfs.treeadapter.TreeAdapter;
 
 public class MainActivity extends AppCompatActivity {
 

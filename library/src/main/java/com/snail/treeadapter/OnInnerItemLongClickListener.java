@@ -1,4 +1,4 @@
-package cn.zfs.treeadapter;
+package com.snail.treeadapter;
 
 import android.view.View;
 import android.widget.AdapterView;

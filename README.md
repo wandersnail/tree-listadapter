@@ -1,18 +1,31 @@
-在module的build.gradle添加依赖：
+# 使用方法
 
-	dependencies {
-		implementation 'com.github.fszeng2011:treeadapter:2.0.0'
+1. 在project的build.gradle里的repositories添加内容，最好两个都加上，有时jitpack会抽风，同步不下来。
+```
+allprojects {
+	repositories {
+		...
+		maven { url 'https://jitpack.io' }
+		maven { url 'https://dl.bintray.com/wandersnail/android/' }
 	}
+}
+```
+2. module的build.gradle中的添加依赖：
+```
+dependencies {
+	...
+	implementation 'com.github.wandersnail:treeadapter:1.0.0'
+}
+```
 
 ## 代码托管
-[![](https://jitpack.io/v/fszeng2011/treeadapter.svg)](https://jitpack.io/#fszeng2011/treeadapter)
-[![Download](https://api.bintray.com/packages/fszeng2017/maven/treeadapter/images/download.svg) ](https://bintray.com/fszeng2017/maven/treeadapter/_latestVersion)
-[![JCenter](https://img.shields.io/badge/JCenter-2.2.1-green.svg?style=flat)](http://jcenter.bintray.com/com/github/fszeng2011/treeadapter/2.2.1/)
+[![](https://jitpack.io/v/wandersnail/treeadapter.svg)](https://jitpack.io/#wandersnail/treeadapter)
+[![Download](https://api.bintray.com/packages/wandersnail/android/treeadapter/images/download.svg) ](https://bintray.com/wandersnail/android/treeadapter/_latestVersion)
 
 ## 效果图
 
-![image](https://github.com/fszeng2011/treeadapter/raw/master/device-2017-10-20-152326.png)
-![image](https://github.com/fszeng2011/treeadapter/raw/master/device-2017-10-20-152327.png)
+![image](https://github.com/wandersnail/treeadapter/raw/master/device-2017-10-20-152326.png)
+![image](https://github.com/wandersnail/treeadapter/raw/master/device-2017-10-20-152327.png)
 
 支持多层级，条目内容自定义。
 
