@@ -1,6 +1,14 @@
 # 使用方法
 
-1. 在project的build.gradle里的repositories添加内容，最好两个都加上，有时jitpack会抽风，同步不下来。
+1. module的build.gradle中的添加依赖，自行修改为最新版本，同步后通常就可以用了：
+```
+dependencies {
+	...
+	implementation 'com.github.wandersnail:treeadapter:1.0.0'
+}
+```
+
+2. 如果从jcenter下载失败。在project的build.gradle里的repositories添加内容，最好两个都加上，有时jitpack会抽风，同步不下来。添加完再次同步即可。
 ```
 allprojects {
 	repositories {
@@ -8,13 +16,6 @@ allprojects {
 		maven { url 'https://jitpack.io' }
 		maven { url 'https://dl.bintray.com/wandersnail/android/' }
 	}
-}
-```
-2. module的build.gradle中的添加依赖：
-```
-dependencies {
-	...
-	implementation 'com.github.wandersnail:treeadapter:1.0.0'
 }
 ```
 
