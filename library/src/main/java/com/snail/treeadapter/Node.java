@@ -1,9 +1,9 @@
 package com.snail.treeadapter;
 
-import android.support.annotation.NonNull;
-
 import java.util.ArrayList;
 import java.util.List;
+
+import androidx.annotation.NonNull;
 
 /**
  * 时间: 2017/10/19 15:50
