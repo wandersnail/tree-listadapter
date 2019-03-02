@@ -91,11 +91,11 @@ public class MainActivity extends AppCompatActivity {
                         private TextView tv;
 
                         @Override
-                        protected void setData(Item node, int position) {
+                        public void setData(Item node, int position) {
                             iv.setVisibility(node.hasChild() ? View.VISIBLE : View.INVISIBLE);
-                            iv.setBackgroundResource(node.isExpand ? R.mipmap.expand : R.mipmap.fold);
+                            iv.setBackgroundResource(node.isExpand() ? R.mipmap.expand : R.mipmap.fold);
                             RelativeLayout.LayoutParams params = (RelativeLayout.LayoutParams) iv.getLayoutParams();
-                            params.leftMargin = (node.level + 1) * dip2px(20);
+                            params.leftMargin = (node.getLevel() + 1) * dip2px(20);
                             iv.setLayoutParams(params);
                             tv.setText(node.name);
                         }
@@ -113,10 +113,10 @@ public class MainActivity extends AppCompatActivity {
                         private TextView tv;
                         
                         @Override
-                        protected void setData(Item node, int position) {
+                        public void setData(Item node, int position) {
                             tv.setText(node.name);
                             RelativeLayout.LayoutParams params = (RelativeLayout.LayoutParams) tv.getLayoutParams();
-                            params.leftMargin = (node.level + 3) * dip2px(20);
+                            params.leftMargin = (node.getLevel() + 3) * dip2px(20);
                             tv.setLayoutParams(params);
                         }
 
