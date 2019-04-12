@@ -5,8 +5,7 @@ import android.widget.AdapterView
 
 /**
  * 时间: 2017/12/5 11:11
- * 作者: 曾繁盛
- * 邮箱: 43068145@qq.com
+ * 作者: zengfansheng
  * 功能:
  */
 

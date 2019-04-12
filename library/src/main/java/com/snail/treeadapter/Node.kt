@@ -4,8 +4,7 @@ import java.util.*
 
 /**
  * 时间: 2017/10/19 15:50
- * 作者: 曾繁盛
- * 邮箱: 43068145@qq.com
+ * 作者: zengfansheng
  * 功能: 数据bean
  */
 
