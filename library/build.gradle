@@ -1,9 +1,14 @@
 apply plugin: 'com.android.library'
-apply plugin: 'kotlin-android'
-apply plugin: 'kotlin-android-extensions'
 apply plugin: 'com.novoda.bintray-release'
+apply plugin: 'maven'
 
-def lib_version = '1.1.0'
+def lib_version = '1.0.0'
+def lib_group = 'cn.wandersnail'
+def lib_artifact = 'tree-listadapter'
+def lib_packaging = 'aar'
+def lib_description = 'Tree-structured ListAadapter for Android'
+group = lib_group
+version = lib_version
 
 android {
     compileSdkVersion rootProject.ext.compileSdkVersion
@@ -17,11 +22,16 @@ android {
     buildTypes {
         release {
             minifyEnabled false
-            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
         }
     }
     lintOptions {
         abortOnError false
+        disable 'TypographyFractions', 'TypographyQuotes'
+    }
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
     }
     packagingOptions {
         exclude 'META-INF/library_release.kotlin_module'
@@ -29,27 +39,118 @@ android {
 }
 
 dependencies {
-    implementation fileTree(include: ['*.jar'], dir: 'libs')
-    compileOnly "androidx.appcompat:appcompat:$appcompat_version"
-    compileOnly "org.jetbrains.kotlin:kotlin-stdlib:$kotlin_version"
+    compileOnly 'androidx.appcompat:appcompat:1.0.2'
 }
 
-// 打包源码
 task sourcesJar(type: Jar) {
+    archiveClassifier.set('sources')
     from android.sourceSets.main.java.srcDirs
-    classifier = 'sources'
+}
+
+task classJar(type: Jar, dependsOn: ['assembleRelease', 'sourcesJar']) {
+    from(project.zipTree("${project.buildDir.absolutePath}/intermediates/packaged-classes/release/classes.jar"))
+    exclude '**/R.class', '**/R$*.class', '**/**/BuildConfig.class', '**/**/BuildConfig$*.class'
+}
+
+task javadoc(type: Javadoc) {
+    source = android.sourceSets.main.java.srcDirs
+    classpath += project.files(android.getBootClasspath().join(File.pathSeparator))
+}
+
+task javadocJar(type: Jar, dependsOn: javadoc) {
+    archiveClassifier.set('javadoc')
+    from javadoc.destinationDir
 }
 
 artifacts {
     archives sourcesJar
+    archives javadocJar
+    archives classJar
 }
 
 publish {
-    repoName="android"//仓库名
+    repoName = "androidx"//仓库名
     userOrg = 'wandersnail' //bintray.com用户名  
-    groupId = 'com.github.wandersnail' //jcenter上的路径
-    artifactId = 'treeadapter' //项目名称  
-    publishVersion = "$lib_version" //版本号 
-    desc = '一个树形结构ListView的适配器'
-    website = 'https://github.com/wandersnail'
+    groupId = lib_group //jcenter上的路径  
+    artifactId = lib_artifact //项目名称  
+    publishVersion = lib_version //版本号  
+    desc = lib_description
+    website = 'https://github.com/wandersnail/tree-listadpter'
+}
+
+if (project.getGradle().startParameter.taskNames.any { it.contains('bintrayUpload') }) {
+    gradle.taskGraph.whenReady { taskGraph ->
+        taskGraph.getAllTasks().find {
+            it.path == ":$project.name:generatePomFileForReleasePublication"
+        }.doLast {
+            file("build/publications/release/pom-default.xml").delete()
+            println 'Overriding pom-file to make sure we can sync to maven central!'
+            pom {
+                //noinspection GroovyAssignabilityCheck
+                project {
+                    name lib_artifact
+                    artifactId lib_artifact
+                    packaging lib_packaging
+                    description lib_description
+                    url 'https://github.com/wandersnail'
+                    version lib_version
+
+                    scm {
+                        url 'https://github.com/wandersnail/tree-listadpter'
+                        connection 'scm:git:https://github.com/wandersnail/tree-listadpter.git'
+                        developerConnection 'scm:git:https://github.com/wandersnail/tree-listadpter.git'
+                    }
+
+                    licenses {
+                        license {
+                            name 'The Apache License, Version 2.0'
+                            url 'http://www.apache.org/licenses/LICENSE-2.0.txt'
+                        }
+                    }
+
+                    developers {
+                        developer {
+                            id 'wandersnail'
+                            name 'Zeng Fansheng'
+                            email 'bingmo977@qq.com'
+                        }
+                    }
+                }
+            }.writeTo("build/publications/release/pom-default.xml")
+        }
+    }
+}
+
+afterEvaluate { project ->
+    uploadArchives {
+        //加载资源
+        Properties properties = new Properties()
+        InputStream inputStream = rootProject.file('local.properties').newDataInputStream()
+        properties.load(inputStream)
+        //读取本地maven的url
+        def localMavenBaseUrl = properties.containsKey('maven.local.url.base') ? properties['maven.local.url.base']
+                : rootProject.hasProperty('maven.local.url.base') ? rootProject['maven.local.url.base'] : null
+        if (localMavenBaseUrl != null) {
+            def username = properties.containsKey('nexus.username') ? properties['nexus.username'] : rootProject['nexus.username']
+            def password = properties.containsKey('nexus.password') ? properties['nexus.password'] : rootProject['nexus.password']
+            repositories {
+                mavenDeployer {
+                    repository(url: "${localMavenBaseUrl}repository/maven-releases") {
+                        authentication(userName: username, password: password)
+                    }
+
+                    snapshotRepository(url: "${localMavenBaseUrl}repository/maven-snapshots") {
+                        authentication(userName: username, password: password)
+                    }
+                    pom.project {
+                        groupId lib_group
+                        artifactId lib_artifact
+                        version lib_version
+                        packaging lib_packaging
+                        description lib_description
+                    }
+                }
+            }
+        }
+    }
 }

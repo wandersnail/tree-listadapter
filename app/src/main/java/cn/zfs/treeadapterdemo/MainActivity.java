@@ -4,22 +4,18 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.AdapterView;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.snail.treeadapter.Node;
-import com.snail.treeadapter.OnInnerItemClickListener;
-import com.snail.treeadapter.OnInnerItemLongClickListener;
-import com.snail.treeadapter.TreeAdapter;
-
 import java.util.ArrayList;
 import java.util.List;
 
 import androidx.appcompat.app.AppCompatActivity;
+import cn.wandersnail.adapter.tree.Node;
+import cn.wandersnail.adapter.tree.TreeListAdapter;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -39,29 +35,17 @@ public class MainActivity extends AppCompatActivity {
         list.add(new Item(7, 4, 1, true, "Html"));
         list.add(new Item(8, 7, 2, false, "p"));
         final MyAdapter adapter = new MyAdapter(lv, list);
-        adapter.setOnInnerItemClickListener(new OnInnerItemClickListener<Item>() {
-            @Override
-            public void onClick(Item node, AdapterView<?> parent, View view, int position) {
-                Toast.makeText(MainActivity.this, "click: " + node.name, Toast.LENGTH_SHORT).show();
-            }
-        });
-        adapter.setOnInnerItemLongClickListener(new OnInnerItemLongClickListener<Item>() {
-            @Override
-            public void onLongClick(Item node, AdapterView<?> parent, View view, int position) {
-                Toast.makeText(MainActivity.this, "long click: " + node.name, Toast.LENGTH_SHORT).show();
-            }
-        });
-        lv.setAdapter(adapter);
-        new Handler().postDelayed(new Runnable() {
-            @Override
-            public void run() {
-                list.add(new Item(9, 7, 2, false, "a"));
-                adapter.notifyDataSetChanged();
-            }
+        adapter.setOnInnerItemClickListener(
+                (node, parent, view, position) -> Toast.makeText(MainActivity.this, "click: " + node.name, Toast.LENGTH_SHORT).show());
+        adapter.setOnInnerItemLongClickListener(
+                (node, parent, view, position) -> Toast.makeText(MainActivity.this, "long click: " + node.name, Toast.LENGTH_SHORT).show());
+        new Handler().postDelayed(() -> {
+            list.add(new Item(9, 7, 2, false, "a"));
+            adapter.notifyDataSetChanged();
         }, 2000);
     }
 
-    private class MyAdapter extends TreeAdapter<Item> {
+    private class MyAdapter extends TreeListAdapter<Item> {
         MyAdapter(ListView lv, List<Item> nodes) {
             super(lv, nodes);
         }
@@ -91,7 +75,7 @@ public class MainActivity extends AppCompatActivity {
                         private TextView tv;
 
                         @Override
-                        public void setData(Item node, int position) {
+                        public void onBind(Item node, int position) {
                             iv.setVisibility(node.hasChild() ? View.VISIBLE : View.INVISIBLE);
                             iv.setBackgroundResource(node.isExpand() ? R.mipmap.expand : R.mipmap.fold);
                             RelativeLayout.LayoutParams params = (RelativeLayout.LayoutParams) iv.getLayoutParams();
@@ -101,7 +85,7 @@ public class MainActivity extends AppCompatActivity {
                         }
 
                         @Override
-                        protected View createConvertView() {
+                        public View createView() {
                             View view = View.inflate(MainActivity.this, R.layout.item_tree_list_has_child, null);
                             iv = view.findViewById(R.id.ivIcon);
                             tv = view.findViewById(R.id.tvName);
@@ -113,7 +97,7 @@ public class MainActivity extends AppCompatActivity {
                         private TextView tv;
                         
                         @Override
-                        public void setData(Item node, int position) {
+                        public void onBind(Item node, int position) {
                             tv.setText(node.name);
                             RelativeLayout.LayoutParams params = (RelativeLayout.LayoutParams) tv.getLayoutParams();
                             params.leftMargin = (node.getLevel() + 3) * dip2px(20);
@@ -121,7 +105,7 @@ public class MainActivity extends AppCompatActivity {
                         }
 
                         @Override
-                        protected View createConvertView() {
+                        public View createView() {
                             View view = View.inflate(MainActivity.this, R.layout.item_tree_list_no_child, null);
                             tv = view.findViewById(R.id.tvName);
                             return view;
