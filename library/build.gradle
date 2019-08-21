@@ -6,7 +6,7 @@ def lib_version = '1.0.0'
 def lib_group = 'cn.wandersnail'
 def lib_artifact = 'tree-listadapter'
 def lib_packaging = 'aar'
-def lib_description = 'Tree-structured ListAadapter for Android'
+def lib_description = 'Tree-structured ListAdapter for Android'
 group = lib_group
 version = lib_version
 
@@ -75,7 +75,7 @@ publish {
     artifactId = lib_artifact //项目名称  
     publishVersion = lib_version //版本号  
     desc = lib_description
-    website = 'https://github.com/wandersnail/tree-listadpter'
+    website = 'https://github.com/wandersnail/tree-listadapter'
 }
 
 if (project.getGradle().startParameter.taskNames.any { it.contains('bintrayUpload') }) {
@@ -96,9 +96,9 @@ if (project.getGradle().startParameter.taskNames.any { it.contains('bintrayUploa
                     version lib_version
 
                     scm {
-                        url 'https://github.com/wandersnail/tree-listadpter'
-                        connection 'scm:git:https://github.com/wandersnail/tree-listadpter.git'
-                        developerConnection 'scm:git:https://github.com/wandersnail/tree-listadpter.git'
+                        url 'https://github.com/wandersnail/tree-listadapter'
+                        connection 'scm:git:https://github.com/wandersnail/tree-listadapter.git'
+                        developerConnection 'scm:git:https://github.com/wandersnail/tree-listadapter.git'
                     }
 
                     licenses {
