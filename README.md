@@ -45,7 +45,7 @@ allprojects {
 
 ## 代码托管
 [![Maven Central](https://maven-badges.herokuapp.com/maven-central/cn.wandersnail/tree-listadapter/badge.svg)](https://maven-badges.herokuapp.com/maven-central/cn.wandersnail/tree-listadapter)
-[![Download](https://api.bintray.com/packages/wandersnail/androidx/tree-listadapter/images/download.svg)](https://bintray.com/wandersnail/androidx/tree-listadapter/_latestVersion)
+[![Release](https://jitpack.io/v/wandersnail/tree-listadapter.svg)](https://jitpack.io/#wandersnail/tree-listadapter)
 
 ## 效果图
 
